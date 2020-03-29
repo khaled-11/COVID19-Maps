@@ -1,0 +1,45 @@
+{
+  "name": "covid19-maps",
+  "version": "1.0.0",
+  "description": "Webhook for Facebook Messenger and custom Map APIs",
+  "main": "main.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khaled-11/COVID19-Maps.git"
+  },
+  "keywords": [
+    "Messenger",
+    "Chatbot",
+    "Maps",
+    "API"
+  ],
+  "author": "Khaled Abouseada",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/khaled-11/COVID19-Maps/issues"
+  },
+  "homepage": "https://github.com/khaled-11/COVID19-Maps#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "fb-messenger": "^2.3.1",
+    "googleapis": "^39.2.0",
+    "mongodb": "^3.5.5",
+    "mongoose": "^5.8.3",
+    "node-geocoder": "^3.26.0",
+    "nodemailer": "^6.4.5",
+    "request": "^2.88.2",
+    "stringify": "^5.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  },
+  "engines": {
+    "node": "11.x"
+  }
+}
