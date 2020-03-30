@@ -220,18 +220,18 @@ function handlePostback(sender_psid, received_postback) {
           "elements":[
              {
               "title":"Welcome to COVID19 Maps!",
-              "image_url":"https://tlopia.com/map.png",
+              "image_url":"https://techolopia.com/wp-content/uploads/2020/03/Profile.jpg",
               "subtitle":"Here you will find the places that are open during this pandemic. We also provide alerts about the dangerous nearby spots and more helpful information.",
               "default_action": {
                 "type": "web_url",
-                "url": "https://tlopia.com",
+                "url": "https://a1fc19aa.ngrok.io",
                 "messenger_extensions": "true",
                 "webview_height_ratio": "full",
               },
               "buttons":[
                 {
                   "type":"web_url",
-                  "url":"https://tlopia.com",
+                  "url":"https://a1fc19aa.ngrok.io",
                   "title":"View Map"
                 }
           ]
@@ -245,7 +245,7 @@ function handlePostback(sender_psid, received_postback) {
           "type":"template",
           "payload":{
             "template_type":"button",
-            "text":"Welcome to COVID19 Maps. Please choose from below:?",
+            "text":"Welcome to COVID19 Maps. Please choose from below:",
             "buttons":[
               {
                 "type":"postback",
