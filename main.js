@@ -1,6 +1,9 @@
-const FBMessenger = require('fb-messenger');
+//const FBMessenger = require('fb-messenger');
+//const asyncjs = require('async');
+//const curl = require('curl');
+//const messenger = new FBMessenger({PAGE_ACCESS_TOKEN});
+//"use strict";
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
-const messenger = new FBMessenger({PAGE_ACCESS_TOKEN});
 const express = require('express');
 const bodyParser = require('body-parser');
 const main = express().use(bodyParser.json()); 
@@ -14,8 +17,6 @@ const cors = require('cors');
 // Connect to a Remote Database //
 connectDB();
 
-messenger.setToken(PAGE_ACCESS_TOKEN);
-
 //// Redirect the index calls to the MAPs API Application ////
 // Enable cors //
 main.use(cors());
@@ -26,10 +27,13 @@ main.use('/api/v1/stores', require('./routes/stores'));
 //Start the Server.
 main.listen(process.env.PORT || 3370, () => console.log('webhook is listening'));
 
-//var users = {};
 
 // Testing Email // Works :)
 //sendConfirmation.sendConfirmation("khaled.abouseada@icloud.com");
+
+
+
+
 
 // Webhook Endpoint For Facebook Messenger //
 main.post('/webhook', (req, res) => {  
@@ -48,20 +52,15 @@ main.post('/webhook', (req, res) => {
       // Get the sender PSID
       const sender_psid = webhook_event.sender.id;
       console.log('Sender PSID: ' + sender_psid);
-
-
-      var info = messenger.getProfile({sender_psid, PAGE_ACCESS_TOKEN,
-fields: "first_name"})
-
-      console.log('Sender PSID: ' + JSON.stringify(info.first_name));
+      //callUserInfo(sender_psid);
+  
       // Check if the event is a message or postback and
       // pass the event to the appropriate handler function
       if (webhook_event.message) {
         handleMessage(sender_psid, webhook_event.message);        
       } else if (webhook_event.postback) {
         handlePostback(sender_psid, webhook_event.postback);
-      }
-      
+      } 
     });
     // Returns a '200 OK' response to all requests
     res.status(200).send('EVENT_RECEIVED');
@@ -108,16 +107,16 @@ function handleMessage(sender_psid, received_message) {
   if (received_message.text) {    
     // Create the payload for a basic text message, which
     // will be added to the body of our request to the Send API
-var te = received_message.text.trim().toLowerCase();
-if (te.includes("1")) {
+var text = received_message.text.trim().toLowerCase();
+if (text.includes("1") || text.includes("2") || text.includes("3") || text.includes("4")
+|| text.includes("5") || text.includes("6") || text.includes("7") || text.includes("8")
+|| text.includes("9") || text.includes("0")) {
     response = {
-      "text": `We received: "${received_message.text}"  . Is that right?`
+      "text": `We received: "${text}". Is that right?`
 }}else {
-
     response = {
       "text": `Welcome to COVID19 Maps. Please enter your address or zip code!`
 }}
-
 
 
 }else if (received_message.attachments) {
@@ -149,7 +148,6 @@ if (te.includes("1")) {
 }
 
 
-
 // Handles messaging_postbacks events
 function handlePostback(sender_psid, received_postback) {
   let response;
@@ -160,7 +158,10 @@ function handlePostback(sender_psid, received_postback) {
   // Set the response based on the postback payload
   if (payload === 'yes') {
     response = { "text": "Thanks" }
-  } else if (payload === 'no') {
+  } else if (payload === 'START') {
+    response = {
+      "text": `Welcome to COVID19 Maps. Please enter your address or zip code!`
+    }} else if (payload === 'no') {
     response = {
       "attachment":{
         "type":"template",
@@ -226,3 +227,5 @@ function sendEmail(sender_id, userMail){
   confirmation=createResponse("Please check your email.");
   callSendAPI(sender_id, confirmation);
 }
+
+
