@@ -3,7 +3,6 @@
 //const curl = require('curl');
 //const messenger = new FBMessenger({PAGE_ACCESS_TOKEN});
 //"use strict";
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const express = require('express');
 const bodyParser = require('body-parser');
 const main = express().use(bodyParser.json()); 
@@ -72,6 +71,8 @@ main.post('/webhook', (req, res) => {
 });
 
 
+
+
 // Adds support for GET requests to our webhook
 main.get('/webhook', (req, res) => {
 
@@ -100,6 +101,8 @@ main.get('/webhook', (req, res) => {
   }
 });
 
+
+
 function handleMessage(sender_psid, received_message) {
   let response;
   
@@ -111,36 +114,88 @@ var text = received_message.text.trim().toLowerCase();
 if (text.includes("1") || text.includes("2") || text.includes("3") || text.includes("4")
 || text.includes("5") || text.includes("6") || text.includes("7") || text.includes("8")
 || text.includes("9") || text.includes("0")) {
-    response = {
-      "text": `We received: "${text}". Is that right?`
-}}else {
-    response = {
-      "text": `Welcome to COVID19 Maps. Please enter your address or zip code!`
-}}
+  response = { 
+    "attachment":{
+      "type":"template",
+      "payload":{
+        "template_type":"button",
+        "text": `We received: "${text}". Is that correct?`,
+        "buttons":[
+          {
+            "type":"postback",
+            "payload":"YES",
+            "title":"Yes"
+          },
+          {
+            "type":"postback",
+            "payload":"NO",
+            "title":"No"
+          }
+        ]
+      }
+    }
+  }  
+  
+}else if (text.includes("start over")){
+ // handlePostback(sender_psid, START)
+ response = { 
+  "attachment":{
+    "type":"template",
+    "payload":{
+      "template_type":"button",
+      "text":"Welcome to COVID19 Maps. Please choose from below:?",
+      "buttons":[
+        {
+          "type":"postback",
+          "payload":"Map",
+          "title":"View Map"
+        },
+        {
+          "type":"postback",
+          "payload":"SUBSC",
+          "title":"Subscription"
+        },
+        {
+          "type":"postback",
+          "payload":"Help",
+          "title":"Help"
+        }
+      ]
+    }
+  }
+}
+}else if (text.includes("@")){
+  // handlePostback(sender_psid, START)
+  em_send = text;
+  response = { 
+    "attachment":{
+      "type":"template",
+      "payload":{
+        "template_type":"button",
+        "text": `We received: "${text}". Is that correct?`,
+        "buttons":[
+          {
+            "type":"postback",
+            "payload": "YES_EMAIL",
+            "title":"Yes"
+          },
+          {
+            "type":"postback",
+            "payload":"NO",
+            "title":"No"
+          }
+        ]
+      }
+    }
+  }
+ }else {
+}
 
 
 }else if (received_message.attachments) {
     // Get the URL of the message attachment
   //  let attachment_url = received_message.attachments[0].payload.url;
-    response = {
-      "attachment":{
-        "type":"template",
-        "payload":{
-          "template_type":"button",
-          "text":"Try the Map!",
-          "buttons":[
-            {
-              "type":"web_url",
-              "url":"https://a1fc19aa.ngrok.io/",
-              "title":"See Map",
-              "webview_height_ratio": "full",
-              "messenger_extensions": "true",
-              //"fallback_url": "https://www.messenger.com/"
-            }
-          ]
-        }
-      }
-    }
+  response = {"text": "Sorry, we don't handle attachment at this moment. Please say start over for the main menu."}
   } 
   
   // Send the response message
@@ -156,32 +211,77 @@ function handlePostback(sender_psid, received_postback) {
   let payload = received_postback.payload;
 
   // Set the response based on the postback payload
-  if (payload === 'yes') {
-    response = { "text": "Thanks" }
-  } else if (payload === 'START') {
-    response = {
-      "text": `Welcome to COVID19 Maps. Please enter your address or zip code!`
-    }} else if (payload === 'no') {
-    response = {
+  if (payload === 'YES') {
+    response = { 
       "attachment":{
         "type":"template",
         "payload":{
-          "template_type":"button",
-          "text":"Try the URL button!",
-          "buttons":[
-            {
-              "type":"web_url",
-              "url":"https://a1fc19aa.ngrok.io/",
-              "title":"URL Button",
-              "webview_height_ratio": "full",
-              "messenger_extensions": "true",
-              //"fallback_url": "https://www.messenger.com/"
-            }
+          "template_type":"generic",
+          "elements":[
+             {
+              "title":"Welcome to COVID19 Maps!",
+              "image_url":"https://tlopia.com/map.png",
+              "subtitle":"Here you will find the places that are open during this pandemic. We also provide alerts about the dangerous nearby spots and more helpful information.",
+              "default_action": {
+                "type": "web_url",
+                "url": "https://tlopia.com",
+                "messenger_extensions": "true",
+                "webview_height_ratio": "full",
+              },
+              "buttons":[
+                {
+                  "type":"web_url",
+                  "url":"https://tlopia.com",
+                  "title":"View Map"
+                }
           ]
         }
+      ]
       }
-    }
+    }}} 
+    else if (payload === 'START') {
+      response = { 
+        "attachment":{
+          "type":"template",
+          "payload":{
+            "template_type":"button",
+            "text":"Welcome to COVID19 Maps. Please choose from below:?",
+            "buttons":[
+              {
+                "type":"postback",
+                "payload":"Map",
+                "title":"View Map"
+              },
+              {
+                "type":"postback",
+                "payload":"SUBSC",
+                "title":"Subscription"
+              },
+              {
+                "type":"postback",
+                "payload":"Help",
+                "title":"Help"
+              }
+            ]
+          }
+        }
+      }
+  }else if (payload === 'NO') {
+      response = { "text": "Sorry, please try again!" }
   } 
+  else if (payload === 'Help') {
+    response = { "text": 'Please wait while we connect you. Say "start over" to leave.' }
+} 
+else if (payload === 'SUBSC') {
+  response = { "text": 'Please enter your email address.' }
+} 
+else if (payload === 'Map') {
+  response = { "text": 'Please enter your zip code. EX: "ny 11214"' }
+} 
+else if (payload === 'YES_EMAIL') {
+  sendConfirmation.sendConfirmation(em_send);
+  response = { "text": 'We sent a confirmation. Please check your email.' }
+} 
   // Send the message to acknowledge the postback
   callSendAPI(sender_psid, response);
 }
@@ -198,7 +298,7 @@ function callSendAPI(sender_psid, response) {
   }
   // Send the HTTP request to the Messenger Platform
   request({
-    "uri": "https://graph.facebook.com/v2.6/me/messages",
+    "uri": "https://graph.facebook.com/v6.0/me/messages",
     "qs": { "access_token": process.env.PAGE_ACCESS_TOKEN },
     "method": "POST",
     "json": request_body
@@ -212,20 +312,14 @@ function callSendAPI(sender_psid, response) {
 }
 
 
-// Get the user address //
+// Get the user address and add it to the database //
 function getAddress(sender_psid){
 }
 
-// Get the user email //
+// Get the user email and add it to the database //
 function getMail(sender_psid){
 }
 
-// Sending Confimation Email //
-function sendEmail(sender_id, userMail){
-  console.log("Sending in progress ....");
-  sendConfirmation.sendConfirmation(userMail);
-  confirmation=createResponse("Please check your email.");
-  callSendAPI(sender_id, confirmation);
-}
+
 
 
