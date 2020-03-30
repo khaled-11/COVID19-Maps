@@ -27,7 +27,8 @@ var geolocate = new mapboxgl.GeolocateControl({
 map.addControl(geolocate);
 map.addControl(new mapboxgl.NavigationControl());
 
-
+//Sample For possible clusters and statistics//
+//Can ba driven from different databases with APIs//
 var mag1 = ['<', ['get', 'mag'], 2];
 var mag2 = ['all', ['>=', ['get', 'mag'], 2], ['<', ['get', 'mag'], 3]];
 var mag3 = ['all', ['>=', ['get', 'mag'], 3], ['<', ['get', 'mag'], 4]];
@@ -209,7 +210,7 @@ return el.firstChild;
 }
  
 function donutSegment(start, end, r, r0, color) {
-if (end - start === 1) end -= 0.00001;
+if (end - start === 1) end -= 0.000001;
 var a0 = 2 * Math.PI * (start - 0.25);
 var a1 = 2 * Math.PI * (end - 0.25);
 var x0 = Math.cos(a0),
@@ -268,7 +269,7 @@ async function getStores() {
       },
       properties: {
         storeId: store.storeId,
-        icon: 'shop'
+        icon: 'grocery'
       }
     };
   });
@@ -276,7 +277,65 @@ async function getStores() {
   loadMap(stores);
 }
 
+var geojson = {
+  'type': 'FeatureCollection',
+  'features': [
+  {
+  'type': 'Feature',
+  'properties': {
+  'message': 'Foo',
+  'iconSize': [60, 60]
+  },
+  'geometry': {
+  'type': 'Point',
+  'coordinates': [-66.324462890625, 32.4695711685304]
+  }
+  },
+  {
+  'type': 'Feature',
+  'properties': {
+  'message': 'Bar',
+  'iconSize': [50, 50]
+  },
+  'geometry': {
+  'type': 'Point',
+  'coordinates': [-72.2158203125, 45.189158092897]
+  }
+  },
+  {
+  'type': 'Feature',
+  'properties': {
+  'message': 'Baz',
+  'iconSize': [35,35]
+  },
+  'geometry': {
+  'type': 'Point',
+  'coordinates': [-74.002640 , 40.601730]
+  }
+  }
+  ]
+  };
 
+  geojson.features.forEach(function(marker) {
+// create a DOM element for the marker
+var el = document.createElement('div');
+el.className = 'marker';
+el.style.backgroundImage =
+'url(https://placekitten.com/g/' +
+marker.properties.iconSize.join('/') +
+'/)';
+el.style.width = marker.properties.iconSize[0] + 'px';
+el.style.height = marker.properties.iconSize[1] + 'px';
+ 
+el.addEventListener('click', function() {
+window.alert(marker.properties.message);
+});
+ 
+// add marker to map
+new mapboxgl.Marker(el)
+.setLngLat(marker.geometry.coordinates)
+.addTo(map);
+});
 
 
 // Load map with stores
@@ -323,7 +382,7 @@ map.on('click', 'places', function(e) {
    
   new mapboxgl.Popup()
   .setLngLat(coordinates)
-  .setHTML("test")
+  .setHTML("This is a test description for places.")
   .addTo(map);
   });
    
