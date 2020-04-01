@@ -140,7 +140,7 @@ if (text.includes("1") || text.includes("2") || text.includes("3") || text.inclu
         "type":"template",
         "payload":{
           "template_type":"button",
-          "text": "We received: Zipcode " + Zipcode + " located at " + NewAddress +". Is that correct?",
+          "text": "We found: " + NewAddress +". Is that correct?",
           "buttons":[
             {
               "type":"postback",
