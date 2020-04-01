@@ -47,4 +47,32 @@ StoreSchema.pre('save', async function(next) {
 
   // Do not save address
   this.address = undefined;
+  next();
 });
+
+module.exports = mongoose.model('Store', StoreSchema);
+
+
+const customerObject = magnoose.model('storeId', storeId);
+
+customerObject.findOneAndUpdate({storeId: "test"}
+
+, {$set: {description: "Highway"}}
+
+, function (err, doc) {
+
+    if (err) {
+
+        console.log("update document error");
+
+    } else {
+
+        console.log("update document success");
+
+        console.log(doc);
+
+    }
+
+
+
+module.exports = mongoose.model('Store', StoreSchema);

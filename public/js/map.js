@@ -2,19 +2,11 @@ mapboxgl.accessToken =
 'pk.eyJ1Ijoia2E5MDMxNG4iLCJhIjoiY2s4YnM3M2FrMDlsbjNsbzd3enE3cGZxbyJ9.OEy6cq9MQUzCRVd6X5QMRw';
 
 
-module.exports.changeNum = () => {
-  process.num = 959;
-  console.log("file4", process.num);
-};
-
-console.log(process.num);
-
-
 
 var map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/mapbox/streets-v11',
-  center: [-74.002640 , process.num],
+  center: [-74.002640 , 40.601730],
   zoom: 13
 });
 
