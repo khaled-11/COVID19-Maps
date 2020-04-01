@@ -47,4 +47,7 @@ StoreSchema.pre('save', async function(next) {
 
   // Do not save address
   this.address = undefined;
+  next();
 });
+
+module.exports = mongoose.model('Store', StoreSchema);
