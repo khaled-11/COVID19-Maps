@@ -13,7 +13,8 @@ const sendConfirmation = require("./mailServer");
 const connectDB = require('./db');
 const cors = require('cors');
 const geocoder = require('./utils/geocoder');
-global.latitude1 = "0";
+
+//global.latitude1 = "0";
 
 // Connect to a Remote Database //
 connectDB();
@@ -37,18 +38,7 @@ main.listen(process.env.PORT || 3370, () => console.log('webhook is listening'))
 //const mongoose = require('mongoose');
 //const geocoder = require('../utils/geocoder');
 
-geocoder.geocode('NY 11214')
-  .then((res)=> {
 
-         global.latitude1 = res[0].latitude;
-         longitude = res[0].longitude;
-
-    console.log(global.latitude1);
-    console.log(longitude);
-  })
-  .catch((err)=> {
-    console.log(err);
-  });
 
 
 
@@ -133,27 +123,53 @@ var text = received_message.text.trim().toLowerCase();
 if (text.includes("1") || text.includes("2") || text.includes("3") || text.includes("4")
 || text.includes("5") || text.includes("6") || text.includes("7") || text.includes("8")
 || text.includes("9") || text.includes("0")) {
-  response = { 
-    "attachment":{
-      "type":"template",
-      "payload":{
-        "template_type":"button",
-        "text": `We received: "${text}". Is that correct?`,
-        "buttons":[
-          {
-            "type":"postback",
-            "payload":"YES",
-            "title":"Yes"
-          },
-          {
-            "type":"postback",
-            "payload":"NO",
-            "title":"No"
-          }
-        ]
+  geocoder.geocode(text)
+  .then((res)=> {
+
+         let text2 = received_message.text;
+         let latitude = res[0].latitude;
+         let longitude = res[0].longitude;
+         let Address = res[0].formattedAddress;
+         let NewAddress = Address.substring(2);
+         let Zipcode = text2.substring(3);
+    console.log(latitude);
+    console.log(longitude);
+    console.log(NewAddress);
+    response = { 
+      "attachment":{
+        "type":"template",
+        "payload":{
+          "template_type":"button",
+          "text": "We received: Zipcode " + Zipcode + " located at " + NewAddress +". Is that correct?",
+          "buttons":[
+            {
+              "type":"postback",
+              "payload":"YES",
+              "title":"Yes"
+            },
+            {
+              "type":"postback",
+              "payload":"NO",
+              "title":"No"
+            }
+          ]
+        }
       }
-    }
-  }  
+    }  
+  })
+
+  .catch((err)=> {
+    console.log(err);
+  })
+  .finally((res)=> {
+    callSendAPI(sender_psid, response);
+  })
+
+  
+  
+
+  // global.NewAddress = "";
+  // global.Zipcode = "";
   
 }else if (text.includes("start over")){
  // handlePostback(sender_psid, START)
@@ -207,7 +223,13 @@ if (text.includes("1") || text.includes("2") || text.includes("3") || text.inclu
       }
     }
   }
- }else {
+ }else if  (text.includes("hi")) {
+  var text2 = received_message.text.trim().toLowerCase();
+  response = {"text": `Hi there, please use the menu or say "Start Over".`}
+}
+ else {
+  var text2 = received_message.text.trim().toLowerCase();
+  response = {"text": `Sorry, we cannot recognize "${text}" at this moment.`}
 }
 
 
