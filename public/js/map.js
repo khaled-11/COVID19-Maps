@@ -283,28 +283,6 @@ var geojson = {
   {
   'type': 'Feature',
   'properties': {
-  'message': 'Foo',
-  'iconSize': [60, 60]
-  },
-  'geometry': {
-  'type': 'Point',
-  'coordinates': [-66.324462890625, 32.4695711685304]
-  }
-  },
-  {
-  'type': 'Feature',
-  'properties': {
-  'message': 'Bar',
-  'iconSize': [50, 50]
-  },
-  'geometry': {
-  'type': 'Point',
-  'coordinates': [-72.2158203125, 45.189158092897]
-  }
-  },
-  {
-  'type': 'Feature',
-  'properties': {
   'message': 'Baz',
   'iconSize': [35,35]
   },

@@ -11,12 +11,12 @@
       crossorigin="anonymous"
     />
 
-    <title>COVID19 MAPS - Add Place</title>
+    <title>COVID19 MAPS - Update Place</title>
   </head>
   <body>
     <div class="container my-3">
       <h1 class="display-4 text-center">
-        Add Place
+        Update Place
       </h1>
 
       <form id="store-form" class="mb-4">
@@ -28,15 +28,22 @@
           <label for="store-address">Place Address</label>
           <input type="text" id="store-address" class="form-control" />
         </div>
-        <div class="form-group">
-          <label for="description">Description</label>
-          <input type="text" id="description" class="form-control" />
-        </div>
+        <form id="store-form" class="mb-4">
+            <div class="form-group">
+              <label for="new-store-id">New Place ID</label>
+              <input type="text" id="new-store-id" class="form-control" />
+            </div>
+        <form id="store-form" class="mb-4">
+            <div class="form-group">
+              <label for="new-description">New Description</label>
+              <input type="text" id="new-description" class="form-control" />
+            </div>
+
         <button type="submit" class="btn btn-primary">Submit</button>
         <a href="index.html" class="btn btn-secondary">Back</a>
       </form>
     </div>
-
-    <script src="js/add.js"></script>
+</div>
+    <script src="js/update.js"></script>
   </body>
 </html>

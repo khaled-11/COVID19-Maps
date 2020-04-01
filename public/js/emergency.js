@@ -3,7 +3,7 @@ const storeId = document.getElementById('store-id');
 const storeAddress = document.getElementById('store-address');
 
 // Send POST to API to add store
-async function addStore(e) {
+async function addEmergency(e) {
   e.preventDefault();
 
   if (storeId.value === '' || storeAddress.value === '') {
@@ -12,7 +12,8 @@ async function addStore(e) {
 
   const sendBody = {
     storeId: storeId.value,
-    address: storeAddress.value
+    address: storeAddress.value,
+    type: "emergency"
   };
 
   try {
@@ -28,7 +29,7 @@ async function addStore(e) {
       throw Error('Place already exists!');
     }
 
-    alert('Place added!');
+    alert('Emergency added!');
     window.location.href = '/index.html';
   } catch (err) {
     alert(err);
@@ -36,4 +37,4 @@ async function addStore(e) {
   }
 }
 
-storeForm.addEventListener('submit', addStore);
+storeForm.addEventListener('submit', addEmergency);

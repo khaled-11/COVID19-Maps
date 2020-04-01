@@ -1,18 +1,22 @@
 const storeForm = document.getElementById('store-form');
 const storeId = document.getElementById('store-id');
 const storeAddress = document.getElementById('store-address');
+const newStoreId = document.getElementById('new-store-id');
+const newStoreDescription = document.getElementById('new-store-description');
 
 // Send POST to API to add store
-async function addStore(e) {
+async function updateStore(e) {
   e.preventDefault();
 
-  if (storeId.value === '' || storeAddress.value === '') {
+  if (storeId.value === '' || storeAddress.value === '' || newStoreDescription === '' || newStoreId === "" ) {
     alert('Please fill in fields');
   }
 
   const sendBody = {
     storeId: storeId.value,
-    address: storeAddress.value
+    address: storeAddress.value,
+    newStoreId: newStoreId.value,
+    newStoreDescription: newStoreDescription.value
   };
 
   try {
@@ -25,10 +29,10 @@ async function addStore(e) {
     });
 
     if (res.status === 400) {
-      throw Error('Place already exists!');
+      throw Error('Store already exists!');
     }
 
-    alert('Place added!');
+    alert('Place updated!');
     window.location.href = '/index.html';
   } catch (err) {
     alert(err);
@@ -36,4 +40,4 @@ async function addStore(e) {
   }
 }
 
-storeForm.addEventListener('submit', addStore);
+storeForm.addEventListener('submit', updateStore);
