@@ -12,6 +12,8 @@ const request = require('request');
 const sendConfirmation = require("./mailServer");
 const connectDB = require('./db');
 const cors = require('cors');
+const geocoder = require('./utils/geocoder');
+global.latitude1 = "0";
 
 // Connect to a Remote Database //
 connectDB();
@@ -30,6 +32,23 @@ main.listen(process.env.PORT || 3370, () => console.log('webhook is listening'))
 // Testing Email // Works :)
 //sendConfirmation.sendConfirmation("khaled.abouseada@icloud.com");
 
+
+// Geocode & create location
+//const mongoose = require('mongoose');
+//const geocoder = require('../utils/geocoder');
+
+geocoder.geocode('NY 11214')
+  .then((res)=> {
+
+         global.latitude1 = res[0].latitude;
+         longitude = res[0].longitude;
+
+    console.log(global.latitude1);
+    console.log(longitude);
+  })
+  .catch((err)=> {
+    console.log(err);
+  });
 
 
 
@@ -224,14 +243,14 @@ function handlePostback(sender_psid, received_postback) {
               "subtitle":"Here you will find the places that are open during this pandemic. We also provide alerts about the dangerous nearby spots and more helpful information.",
               "default_action": {
                 "type": "web_url",
-                "url": "https://a1fc19aa.ngrok.io",
+                "url": "https://893b6aad.ngrok.io",
                 "messenger_extensions": "true",
                 "webview_height_ratio": "full",
               },
               "buttons":[
                 {
                   "type":"web_url",
-                  "url":"https://a1fc19aa.ngrok.io",
+                  "url":"https://893b6aad.ngrok.io",
                   "title":"View Map"
                 }
           ]

@@ -9,3 +9,4 @@ router
   .post(addStore);
 
 module.exports = router;
+
