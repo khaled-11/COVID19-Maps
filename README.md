@@ -2,7 +2,7 @@
 Custom Map connected to a Facebook Messenger Chatbot to help people locate resources during COVID19 pendemic.
 
 # How to install this application?
-You will need noe.js installed on your computer or host the application on any server that suuports node.js.
+You will need node.js installed on your computer or host the application on any server that suuports node.js.
 
 You can clone/download this repository and create a .env file in the main folder with the following variables:
 GEOCODER_API_KEY= ( The API Key for the GEO Coder provider)
